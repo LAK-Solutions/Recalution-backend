@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recalution.Domain", "src\Recalution.Domain\Recalution.Domain.csproj", "{CD328D75-32F0-44FA-B6DD-2BC4C9802AC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recalution.Application", "src\Recalution.Application\Recalution.Application.csproj", "{488CBB85-8B38-4B9A-ABB4-F3D1A613E4DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recalution.Infrastructure", "src\Recalution.Infrastructure\Recalution.Infrastructure.csproj", "{846B6749-5E18-4CF0-8738-FBFAB2CE7F7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Recalution.API", "src\Recalution.API\Recalution.API.csproj", "{88BFEB2C-C699-44E1-851D-CF407B3EFD74}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD328D75-32F0-44FA-B6DD-2BC4C9802AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD328D75-32F0-44FA-B6DD-2BC4C9802AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD328D75-32F0-44FA-B6DD-2BC4C9802AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD328D75-32F0-44FA-B6DD-2BC4C9802AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{488CBB85-8B38-4B9A-ABB4-F3D1A613E4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{488CBB85-8B38-4B9A-ABB4-F3D1A613E4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{488CBB85-8B38-4B9A-ABB4-F3D1A613E4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{488CBB85-8B38-4B9A-ABB4-F3D1A613E4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{846B6749-5E18-4CF0-8738-FBFAB2CE7F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{846B6749-5E18-4CF0-8738-FBFAB2CE7F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{846B6749-5E18-4CF0-8738-FBFAB2CE7F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{846B6749-5E18-4CF0-8738-FBFAB2CE7F7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88BFEB2C-C699-44E1-851D-CF407B3EFD74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BFEB2C-C699-44E1-851D-CF407B3EFD74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BFEB2C-C699-44E1-851D-CF407B3EFD74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BFEB2C-C699-44E1-851D-CF407B3EFD74}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

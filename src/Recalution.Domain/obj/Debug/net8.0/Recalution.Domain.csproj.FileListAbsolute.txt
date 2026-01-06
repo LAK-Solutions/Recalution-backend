@@ -1,0 +1,12 @@
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\bin\Debug\net8.0\Recalution.Domain.deps.json
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\bin\Debug\net8.0\Recalution.Domain.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\bin\Debug\net8.0\Recalution.Domain.pdb
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.AssemblyInfoInputs.cache
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.AssemblyInfo.cs
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.csproj.CoreCompileInputs.cache
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.sourcelink.json
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\refint\Recalution.Domain.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\Recalution.Domain.pdb
+D:\pet-projects\Recalution-backend\src\Recalution.Domain\obj\Debug\net8.0\ref\Recalution.Domain.dll

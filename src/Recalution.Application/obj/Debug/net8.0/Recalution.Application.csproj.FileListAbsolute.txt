@@ -1,0 +1,16 @@
+D:\pet-projects\Recalution-backend\src\Recalution.Application\bin\Debug\net8.0\Recalution.Application.deps.json
+D:\pet-projects\Recalution-backend\src\Recalution.Application\bin\Debug\net8.0\Recalution.Application.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Application\bin\Debug\net8.0\Recalution.Application.pdb
+D:\pet-projects\Recalution-backend\src\Recalution.Application\bin\Debug\net8.0\Recalution.Domain.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Application\bin\Debug\net8.0\Recalution.Domain.pdb
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.csproj.AssemblyReference.cache
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.AssemblyInfoInputs.cache
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.AssemblyInfo.cs
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.csproj.CoreCompileInputs.cache
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.sourcelink.json
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recaluti.5C1DCCD3.Up2Date
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\refint\Recalution.Application.dll
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\Recalution.Application.pdb
+D:\pet-projects\Recalution-backend\src\Recalution.Application\obj\Debug\net8.0\ref\Recalution.Application.dll
