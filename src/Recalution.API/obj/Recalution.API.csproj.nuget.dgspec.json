@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\pet-projects\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj": {}
+    "D:\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj": {}
   },
   "projects": {
-    "D:\\pet-projects\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj": {
+    "D:\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj",
+        "projectUniqueName": "D:\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj",
         "projectName": "Recalution.API",
-        "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj",
-        "packagesPath": "C:\\Users\\jasja\\.nuget\\packages\\",
-        "outputPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.API\\obj\\",
+        "projectPath": "D:\\Recalution-backend\\src\\Recalution.API\\Recalution.API.csproj",
+        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+        "outputPath": "D:\\Recalution-backend\\src\\Recalution.API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jasja\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -26,11 +26,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj": {
-                "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj"
+              "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj": {
+                "projectPath": "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj"
               },
-              "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj": {
-                "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj"
+              "D:\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj": {
+                "projectPath": "D:\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj"
               }
             }
           }
@@ -53,6 +53,20 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.22, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.6, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -82,17 +96,17 @@
         }
       }
     },
-    "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj": {
+    "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj",
+        "projectUniqueName": "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj",
         "projectName": "Recalution.Application",
-        "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj",
-        "packagesPath": "C:\\Users\\jasja\\.nuget\\packages\\",
-        "outputPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\obj\\",
+        "projectPath": "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj",
+        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+        "outputPath": "D:\\Recalution-backend\\src\\Recalution.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jasja\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -104,8 +118,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj": {
-                "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj"
+              "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj": {
+                "projectPath": "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj"
               }
             }
           }
@@ -144,17 +158,17 @@
         }
       }
     },
-    "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj": {
+    "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
+        "projectUniqueName": "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
         "projectName": "Recalution.Domain",
-        "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
-        "packagesPath": "C:\\Users\\jasja\\.nuget\\packages\\",
-        "outputPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\obj\\",
+        "projectPath": "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
+        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+        "outputPath": "D:\\Recalution-backend\\src\\Recalution.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jasja\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -202,17 +216,17 @@
         }
       }
     },
-    "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj": {
+    "D:\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj",
+        "projectUniqueName": "D:\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj",
         "projectName": "Recalution.Infrastructure",
-        "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\jasja\\.nuget\\packages\\",
-        "outputPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Infrastructure\\obj\\",
+        "projectPath": "D:\\Recalution-backend\\src\\Recalution.Infrastructure\\Recalution.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+        "outputPath": "D:\\Recalution-backend\\src\\Recalution.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jasja\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -224,8 +238,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj": {
-                "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj"
+              "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj": {
+                "projectPath": "D:\\Recalution-backend\\src\\Recalution.Application\\Recalution.Application.csproj"
               }
             }
           }
@@ -244,6 +258,22 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

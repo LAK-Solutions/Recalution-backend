@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\jasja\\.nuget\\packages\\": {}
+    "C:\\Users\\ACER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
+      "projectUniqueName": "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
       "projectName": "Recalution.Domain",
-      "projectPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
-      "packagesPath": "C:\\Users\\jasja\\.nuget\\packages\\",
-      "outputPath": "D:\\pet-projects\\Recalution-backend\\src\\Recalution.Domain\\obj\\",
+      "projectPath": "D:\\Recalution-backend\\src\\Recalution.Domain\\Recalution.Domain.csproj",
+      "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
+      "outputPath": "D:\\Recalution-backend\\src\\Recalution.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jasja\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

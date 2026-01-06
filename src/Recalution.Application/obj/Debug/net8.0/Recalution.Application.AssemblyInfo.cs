@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Recalution.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bd796c303ee13ea655313f67e3f0f3bbd616d4d6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fda8ada93d8ef5f2684954647c74d33c7d3dc61f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Recalution.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Recalution.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
