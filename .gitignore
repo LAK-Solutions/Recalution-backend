@@ -81,6 +81,7 @@ StyleCopReport.xml
 *.ilk
 *.meta
 *.obj
+**/obj/
 *.iobj
 *.pch
 *.pdb
@@ -482,3 +483,16 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Rider / JetBrains .NET restore & cache files
+**/rider.project.restore.info
+
+# NuGet restore artifacts
+project.assets.json
+project.nuget.cache
+
+# MSBuild generated
+*.binlog
+
+# .NET SDK global.json cache (if any)
+.dotnet/
