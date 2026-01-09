@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Recalution.Infrastructure.Data;
+using Recalution.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+
+builder.Services
+    .AddIdentity<AppUser, IdentityRole>((options) =>
+    {
+        // Disable all password requirements
+        options.Password.RequiredLength = 1;
+        options.Password.RequireDigit = false; 
+        options.Password.RequireUppercase = false; 
+        options.Password.RequireNonAlphanumeric = false; 
+        options.Password.RequireLowercase = false;
+    })
+    .AddEntityFrameworkStores<AppDbContext>();
+
 
 var app = builder.Build();
 
