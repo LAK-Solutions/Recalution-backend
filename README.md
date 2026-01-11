@@ -63,7 +63,6 @@ Use the format: `<type>/<issue-number>-<short-description>`
 **Examples:**  
 `feature/12-add-transaction-crud`  
 `bugfix/34-fix-budget-validation`  
-`hotfix/45-correct-login-error`  
 `chore/78-update-dependencies`  
 
 ### Workflow
