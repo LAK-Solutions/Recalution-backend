@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Services;
+using Recalution.Application.Services;
 using Recalution.Infrastructure.Data;
+using Recalution.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +21,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+builder.Services.AddScoped<IDeckRepository, DeckRepository>();
+builder.Services.AddScoped<IDeckService, DeckService>();
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await DbSeeder.SeedAsync(context);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
