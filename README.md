@@ -45,16 +45,27 @@ dotnet format
 
 ## Contributing
 
-We use **issue-based branching** to keep development organized.
+We use **type-based branching** to keep development organized and coherent.
 
 ### Branch Naming
-Use the format: `issue-<number>/<short-description>`
+Use the format: `<type>/<issue-number>-<short-description>`
 
-Examples:
-```
-issue-12/add-transaction-crud
-issue-34/fix-budget-validation
-```
+**Type options:**
+- `feature` → new features
+- `bugfix` → bug fixes
+- `hotfix` → urgent fixes in production
+- `chore` → maintenance tasks
+
+**Rules:**
+1. Use lowercase letters only.  
+2. Separate words with hyphens (`-`).  
+3. Keep names concise and descriptive.
+
+**Examples:**
+`feature/12-add-transaction-crud`
+`bugfix/34-fix-budget-validation`
+`hotfix/45-correct-login-error`
+`chore/78-update-dependencies`
 
 ### Workflow
 1. Make sure there is a GitHub issue for your work.
