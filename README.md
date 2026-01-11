@@ -53,7 +53,6 @@ Use the format: `<type>/<issue-number>-<short-description>`
 **Type options:**
 - `feature` → new features
 - `bugfix` → bug fixes
-- `hotfix` → urgent fixes in production
 - `chore` → maintenance tasks
 
 **Rules:**
