@@ -61,7 +61,7 @@ Use the format: `<type>/<issue-number>-<short-description>`
 2. Separate words with hyphens (`-`).  
 3. Keep names concise and descriptive.
 
-**Examples:**
+**Examples:**  
 `feature/12-add-transaction-crud`  
 `bugfix/34-fix-budget-validation`  
 `hotfix/45-correct-login-error`  
