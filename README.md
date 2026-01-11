@@ -48,7 +48,7 @@ dotnet format
 We use **type-based branching** to keep development organized and coherent.
 
 ### Branch Naming
-Use the format: `<type>/<issue-number>-<short-description>`
+Use the format: `<type>/<issue-number>/<short-description>`
 
 **Type options:**
 - `feature` → new features
@@ -61,9 +61,9 @@ Use the format: `<type>/<issue-number>-<short-description>`
 3. Keep names concise and descriptive.
 
 **Examples:**  
-`feature/12-add-transaction-crud`  
-`bugfix/34-fix-budget-validation`  
-`chore/78-update-dependencies`  
+`feature/12/add-transaction-crud`  
+`bugfix/34/fix-budget-validation`  
+`chore/78/update-dependencies`  
 
 ### Workflow
 1. Make sure there is a GitHub issue for your work.
