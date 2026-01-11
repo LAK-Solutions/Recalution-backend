@@ -4,5 +4,5 @@ namespace Recalution.Infrastructure.Identity;
 
 public class AppUser : IdentityUser
 {
-    
+
 }

@@ -68,7 +68,7 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-            
+
             // This tells ASP.NET Core which claim should be used as NameIdentifier
             NameClaimType = JwtRegisteredClaimNames.Sub
         };

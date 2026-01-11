@@ -31,7 +31,7 @@ public class AdminController : ControllerBase
                 u.Email,
             })
             .ToListAsync();
-        
+
         var usersWithRoles = new List<object>();
         foreach (var u in users)
         {
