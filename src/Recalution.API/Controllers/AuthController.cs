@@ -40,17 +40,6 @@ public class AuthController : ControllerBase
         return Ok("User created successfully!");
     }
 
-
-    [HttpGet("emails")]
-    [Authorize] 
-    public async Task<IActionResult> GetAllEmails()
-    {
-        var emails = await _userManager.Users
-            .Select(u => u.Email)
-            .ToListAsync();
-        return Ok(emails);
-    }
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
@@ -71,13 +60,19 @@ public class AuthController : ControllerBase
         );
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var roles = await _userManager.GetRolesAsync(user);
 
-        var claims = new[]
+
+        var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
+
+        claims.AddRange(
+            roles.Select(role => new Claim(ClaimTypes.Role, role))
+        );
 
         var token = new JwtSecurityToken(
             issuer: jwtSettings["Issuer"],
