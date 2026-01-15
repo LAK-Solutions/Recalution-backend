@@ -99,7 +99,7 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
             return new RoleChangeResult(true, Array.Empty<string>());
 
         var removeResult = await userManager.RemoveFromRolesAsync(user, rolesToRemove);
-        
+
         return removeResult.Succeeded
             ? new RoleChangeResult(true, rolesToRemove)
             : new RoleChangeResult(false, Array.Empty<string>());
