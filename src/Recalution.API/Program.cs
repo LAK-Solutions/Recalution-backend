@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Recalution.Application.Admin;
+using Recalution.Application.Interfaces;
 using Recalution.Infrastructure.Data;
 using Recalution.Infrastructure.Identity;
 
@@ -14,12 +16,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<IAdminUserManager, AdminUserManager>();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new()
     {
         Title = "Recalution API",
-        Version = "v1"
+        Version = "v0.0.1"
     });
 
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme

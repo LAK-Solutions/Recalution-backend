@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Recalution.Application.Admin;
 using Recalution.Infrastructure.Identity;
 
 namespace Recalution.API.Controllers;
@@ -12,75 +13,32 @@ namespace Recalution.API.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly AdminService _adminService;
 
-    public AdminController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+    public AdminController(AdminService adminService)
     {
-        _userManager = userManager;
-        _roleManager = roleManager;
+        _adminService = adminService;
     }
 
     [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userManager.Users
-            .Select(u => new
-            {
-                u.Id,
-                u.Email,
-            })
-            .ToListAsync();
-
-        var usersWithRoles = new List<object>();
-        foreach (var u in users)
-        {
-            var roles = await _userManager.GetRolesAsync(
-                await _userManager.FindByIdAsync(u.Id)
-            );
-
-            usersWithRoles.Add(new
-            {
-                u.Id,
-                u.Email,
-                Roles = roles
-            });
-        }
-
-        return Ok(usersWithRoles);
+        var users = await _adminService.GetAllUsersAsync();
+        return Ok(users);
     }
 
-    [HttpPut("users/{userId}/role")]
-    public async Task<IActionResult> ChangeUserRole(
+    [HttpPut("users/{userId}/roles")]
+    public async Task<IActionResult> AddUserRoles(
         string userId,
-        [FromBody] string role)
+        [FromBody] IReadOnlyList<string> roles)
     {
-        // Prevent admin from changing their own role
+        var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         var currentAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (currentAdminId == userId)
-            return BadRequest("Admin cannot change their own role");
 
-        // Find the target user
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-            return NotFound("User not found");
+        var ok = await _adminService.AddUserRolesAsync(currentAdminId, userId, roles);
 
-        // Validate the requested role exists
-        if (!await _roleManager.RoleExistsAsync(role))
-            return BadRequest("Role does not exist");
-
-        // Remove all current roles
-        var currentRoles = await _userManager.GetRolesAsync(user);
-        await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-        // Add the new role
-        await _userManager.AddToRoleAsync(user, role);
-
-        // Return confirmation
-        return Ok(new
-        {
-            userId = user.Id,
-            newRole = role
-        });
+        if (!ok) return BadRequest("Role change failed");
+        return Ok(new { userId, roles });
     }
 }
