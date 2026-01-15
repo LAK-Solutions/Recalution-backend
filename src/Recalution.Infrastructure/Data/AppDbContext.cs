@@ -1,10 +1,22 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Recalution.Domain.Entities;
+using Recalution.Infrastructure.Identity;
 
 namespace Recalution.Infrastructure.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<AppUser>(options)
 {
-    public DbSet<User> Users => Set<User>();
     public DbSet<Deck> Decks => Set<Deck>();
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Deck>()
+            .HasOne<AppUser>()
+            .WithMany()
+            .HasForeignKey(d => d.OwnerId)
+            .IsRequired();
+    }
 }

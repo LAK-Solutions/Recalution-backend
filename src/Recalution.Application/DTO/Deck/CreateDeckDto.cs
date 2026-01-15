@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Recalution.Application.DTO.Deck;
 
 public class CreateDeckDto
 {
+    [Required]
     public string Name { get; set; } = null!;
-    public Guid UserId { get; set; } //TODO: take userId from claims, remove this
 }

@@ -7,8 +7,8 @@ namespace Recalution.Infrastructure.Repositories;
 
 public class DeckRepository(AppDbContext context) : Repository<Deck>(context), IDeckRepository
 {
-    public async Task<IEnumerable<Deck>> GetDeckByUserId(Guid userId)
+    public async Task<IEnumerable<Deck>> GetDeckByUserId(string userId)
     {
-        return await _dbSet.Where(d => d.UserId == userId).ToListAsync();
+        return await _dbSet.Where(d => d.OwnerId == userId).ToListAsync();
     }
 }

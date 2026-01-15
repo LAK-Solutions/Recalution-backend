@@ -7,9 +7,9 @@ namespace Recalution.Application.Services;
 
 public class DeckService(IDeckRepository deckRepository) : IDeckService
 {
-    public async Task<IEnumerable<Deck>> GetByUserIdAsync(Guid userId)
+    public async Task<IEnumerable<Deck>> GetByUserIdAsync(string userId)
     {
-        if (userId == Guid.Empty)
+        if (userId == String.Empty)
         {
             throw new ArgumentException("UserId cannot be empty", nameof(userId));
         }
@@ -17,20 +17,20 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return await deckRepository.GetDeckByUserId(userId);
     }
 
-    public async Task<Deck> CreateDeckAsync(string name, Guid userId)
+    public async Task<Deck> CreateDeckAsync(string name, string userId)
     {
         var deck = new Deck
         {
             Id = Guid.NewGuid(),
             Name = name,
-            UserId = userId
+            OwnerId = userId
         };
 
         await deckRepository.AddAsync(deck);
         return deck;
     }
 
-    public async Task<Deck> UpdateDeckAsync(Guid deckId, string name, Guid userId)
+    public async Task<Deck> UpdateDeckAsync(Guid deckId, string name, string userId)
     {
         if (deckId == Guid.Empty)
             throw new ArgumentException("DeckId cannot be empty", nameof(deckId));
@@ -38,7 +38,7 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         var deck = await deckRepository.GetByIdAsync(deckId);
         if (deck == null) throw new KeyNotFoundException("Deck not found");
 
-        if (deck.UserId != userId)
+        if (deck.OwnerId != userId)
             throw new UnauthorizedAccessException("You cannot update the deck");
 
         deck.Name = name;
@@ -46,12 +46,12 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return deck;
     }
 
-    public async Task DeleteDeckAsync(Guid deckId, Guid userId)
+    public async Task DeleteDeckAsync(Guid deckId, string userId)
     {
         var deck = await deckRepository.GetByIdAsync(deckId);
         if (deck == null) throw new KeyNotFoundException("Deck not found");
 
-        if (deck.UserId != userId)
+        if (deck.OwnerId != userId)
             throw new UnauthorizedAccessException("You cannot delete the deck");
 
         await deckRepository.DeleteAsync(deck);
