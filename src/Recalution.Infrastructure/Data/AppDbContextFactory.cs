@@ -12,7 +12,7 @@ namespace Recalution.Infrastructure.Data
             var apiProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "../Recalution.API");
 
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(apiProjectPath)               
+                .SetBasePath(apiProjectPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 

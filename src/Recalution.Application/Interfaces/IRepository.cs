@@ -1,6 +1,6 @@
 namespace Recalution.Application.Interfaces;
 
-public interface IRepository<T> where T: class
+public interface IRepository<T> where T : class
 {
     Task<T> GetByIdAsync(Guid id);
     Task<IEnumerable<T>> GetAllAsync();
