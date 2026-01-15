@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -104,16 +105,10 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    // 1. Seed roles
     await IdentityDataSeeder.SeedRolesAsync(services);
-
-    // 2. Seed admin user
     await IdentityDataSeeder.SeedAdminAsync(services);
-
-    // 3. Seed test user for decks
     await IdentityDataSeeder.SeedTestUserAsync(services);
 
-    // 4. Seed decks
     var context = services.GetRequiredService<AppDbContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await DbSeeder.SeedAsync(context, userManager);
