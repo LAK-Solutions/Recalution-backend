@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Recalution.Application.DTO.Auth;
 using Recalution.Infrastructure.Identity;
 
 namespace Recalution.API.Controllers;
@@ -89,16 +90,4 @@ public class AuthController : ControllerBase
         // 4. Return token
         return Ok(new { token = tokenString });
     }
-}
-
-public class LoginDto
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
-}
-
-public class RegisterDto
-{
-    public string Email { get; set; }
-    public string Password { get; set; }
 }
