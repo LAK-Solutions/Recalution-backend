@@ -7,7 +7,7 @@ namespace Recalution.Application.Services;
 
 public class DeckService(IDeckRepository deckRepository) : IDeckService
 {
-    public async Task<IEnumerable<Deck>> GetByUserIdAsync(string userId)
+    public async Task<IReadOnlyCollection<Deck>> GetByUserIdAsync(string userId)
     {
         if (userId == String.Empty)
         {
@@ -17,7 +17,7 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return await deckRepository.GetDeckByUserId(userId);
     }
 
-    public async Task<Deck> CreateDeckAsync(string name, string userId)
+    public async Task<Deck?> CreateDeckAsync(string name, string userId)
     {
         var deck = new Deck
         {
@@ -30,7 +30,7 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return deck;
     }
 
-    public async Task<Deck> UpdateDeckAsync(Guid deckId, string name, string userId)
+    public async Task<Deck?> UpdateDeckAsync(Guid deckId, string name, string userId)
     {
         if (deckId == Guid.Empty)
             throw new ArgumentException("DeckId cannot be empty", nameof(deckId));

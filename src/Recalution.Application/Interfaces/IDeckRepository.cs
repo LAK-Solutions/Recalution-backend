@@ -5,5 +5,5 @@ namespace Recalution.Application.Interfaces;
 
 public interface IDeckRepository : IRepository<Deck>
 {
-    Task<IEnumerable<Deck>> GetDeckByUserId(string userId);
+    Task<IReadOnlyCollection<Deck>> GetDeckByUserId(string userId);
 }

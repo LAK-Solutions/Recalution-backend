@@ -27,7 +27,16 @@ public class DecksController(IDeckService deckService) : Controller
 
         var deck = await deckService.CreateDeckAsync(dto.Name, userId);
 
-        return Ok(deck);
+        if (deck == null)
+        {
+            return BadRequest(new { Message = "Deck could not be created." });
+        }
+
+        return Ok(new
+        {
+            Deck = deck,
+            Message = "Deck was created successfully."
+        });
     }
 
     [Authorize]
@@ -39,7 +48,16 @@ public class DecksController(IDeckService deckService) : Controller
 
         var deck = await deckService.UpdateDeckAsync(deckId, dto.Name, userId);
 
-        return Ok(deck);
+        if (deck == null)
+        {
+            return BadRequest(new { Message = "Deck could not be updated." });
+        }
+
+        return Ok(new
+        {
+            Deck = deck,
+            Message = "Deck was updated successfully."
+        });
     }
 
     [Authorize]

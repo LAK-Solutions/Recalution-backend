@@ -4,23 +4,18 @@ using Recalution.Infrastructure.Data;
 
 namespace Recalution.Infrastructure.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<T>(AppDbContext context) : IRepository<T>
+    where T : class
 {
-    protected readonly AppDbContext _context;
-    protected readonly DbSet<T> _dbSet;
-
-    public Repository(AppDbContext context)
-    {
-        _context = context;
-        _dbSet = context.Set<T>();
-    }
+    protected readonly AppDbContext _context = context;
+    protected readonly DbSet<T> _dbSet = context.Set<T>();
 
     public async Task<T> GetByIdAsync(Guid id)
     {
         return await _dbSet.FindAsync(id) ?? throw new InvalidOperationException();
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IReadOnlyCollection<T>> GetAllAsync()
     {
         return await _dbSet.ToListAsync();
     }
