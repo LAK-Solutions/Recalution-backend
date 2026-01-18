@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Recalution.Application.Admin;
 using Recalution.Application.Interfaces;
 using Recalution.Infrastructure.Data;
 using Recalution.Infrastructure.Identity;
@@ -17,7 +16,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<IAdminUserManager, AdminUserManager>();
 
 builder.Services.AddSwaggerGen(options =>

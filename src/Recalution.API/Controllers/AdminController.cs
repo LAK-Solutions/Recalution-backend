@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Recalution.Application.Admin;
+using Recalution.Application.Interfaces;
 using Recalution.Infrastructure.Identity;
 
 namespace Recalution.API.Controllers;
@@ -13,17 +13,17 @@ namespace Recalution.API.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
-    private readonly AdminService _adminService;
+    private readonly IAdminUserManager _adminUserManager;
 
-    public AdminController(AdminService adminService)
+    public AdminController(IAdminUserManager adminUserManager)
     {
-        _adminService = adminService;
+        _adminUserManager = adminUserManager;
     }
 
     [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _adminService.GetAllUsersAsync();
+        var users = await _adminUserManager.GetAllUsersAsync();
         return Ok(users);
     }
 
@@ -32,11 +32,9 @@ public class AdminController : ControllerBase
         string userId,
         [FromBody] IReadOnlyList<string> roles)
     {
-        var currentAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (currentAdminId is null)
-            return Unauthorized();
+        var currentAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
-        var result = await _adminService.AddUserRolesAsync(currentAdminId, userId, roles);
+        var result = await _adminUserManager.AddUserRolesAsync(currentAdminId, userId, roles);
 
         if (!result.Success) return BadRequest("Role change failed");
 
@@ -50,10 +48,7 @@ public class AdminController : ControllerBase
     [HttpDelete("users/{userId}")]
     public async Task<IActionResult> DeleteUser(string userId)
     {
-        var ok = await _adminService.DeleteUserAsync(userId);
-
-        if (!ok)
-            return NotFound("User not found");
+        var ok = await _adminUserManager.DeleteUserAsync(userId);
 
         return NoContent();
     }
@@ -67,7 +62,7 @@ public class AdminController : ControllerBase
         if (currentAdminId is null)
             return Unauthorized();
 
-        var result = await _adminService.RemoveUserRolesAsync(currentAdminId, userId, roles);
+        var result = await _adminUserManager.RemoveUserRolesAsync(currentAdminId, userId, roles);
 
         if (!result.Success)
             return BadRequest("Role removal failed");
