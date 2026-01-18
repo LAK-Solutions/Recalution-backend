@@ -1,7 +1,7 @@
 namespace Recalution.Application.Dtos;
 
 public sealed record UserDetailsDto(
-    string Id,
+    Guid Id,
     string? Email,
     IReadOnlyList<string> Roles
 );
