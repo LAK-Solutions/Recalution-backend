@@ -7,7 +7,7 @@ public static class IdentityDataSeeder
 {
     public static async Task SeedRolesAsync(IServiceProvider services)
     {
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         string[] roles = { "Admin", "User", "Manager" };
 
@@ -15,7 +15,7 @@ public static class IdentityDataSeeder
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                await roleManager.CreateAsync(new IdentityRole<Guid>(role));
             }
         }
     }
@@ -23,11 +23,11 @@ public static class IdentityDataSeeder
     public static async Task SeedAdminAsync(IServiceProvider services)
     {
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         // Make sure Admin role exists
         if (!await roleManager.RoleExistsAsync("Admin"))
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
+            await roleManager.CreateAsync(new IdentityRole<Guid>("Admin"));
 
         // Check if admin user already exists
         var adminUser = await userManager.FindByNameAsync("admin");

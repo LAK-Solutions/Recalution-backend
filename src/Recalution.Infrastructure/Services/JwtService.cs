@@ -13,7 +13,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
     public string GenerateJwt(JwtUserDto user)
     {
         if (user == null) throw new ArgumentNullException(nameof(user));
-        if (string.IsNullOrEmpty(user.Id)) throw new ArgumentException("UserId cannot be null or empty");
+        if (user.Id == Guid.Empty) throw new ArgumentException("UserId cannot be null or empty");
 
         var jwtSettings = configuration.GetSection("JwtSettings");
         var secret = jwtSettings["Secret"] ?? throw new InvalidOperationException("JWT Secret is not configured");
@@ -23,7 +23,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
