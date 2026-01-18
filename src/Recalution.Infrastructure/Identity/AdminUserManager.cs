@@ -38,49 +38,60 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
         return result.Succeeded;
     }
 
-    public async Task<RoleChangeResult> AddUserRolesAsync(string adminUserId, string userId, IReadOnlyList<string> roles)
+    public Task<RoleChangeResult> AddUserRolesAsync(
+        string adminUserId,
+        string userId,
+        IReadOnlyList<string> roles)
     {
-        // admin cannot change own role
-        if (adminUserId == userId)
-            return new RoleChangeResult(false, Array.Empty<string>());
+        Func<List<string>, IList<string>, List<string>> selectRolesToAdd =
+            (validRoles, currentRoles) =>
+                validRoles
+                    .Where(r => !currentRoles.Contains(r, StringComparer.OrdinalIgnoreCase))
+                    .ToList();
 
-        var user = await userManager.FindByIdAsync(userId);
-        if (user is null)
-            return new RoleChangeResult(false, Array.Empty<string>());
-
-
-        var validRoles = roles
-            .Where(r => IdentityDataSeeder.AllowedRoles.Contains(r))
-            .ToList();
-
-        if (validRoles.Count == 0)
-            return new RoleChangeResult(true, Array.Empty<string>());
-
-        var currentRoles = await userManager.GetRolesAsync(user);
-
-        var rolesToAdd = validRoles
-            .Where(r => !currentRoles.Contains(r, StringComparer.OrdinalIgnoreCase))
-            .ToList();
-
-        if (rolesToAdd.Count == 0)
-            return new RoleChangeResult(true, Array.Empty<string>());
-
-        var addResult = await userManager.AddToRolesAsync(user, rolesToAdd);
-        return addResult.Succeeded
-            ? new RoleChangeResult(true, rolesToAdd)
-            : new RoleChangeResult(false, Array.Empty<string>());
+        return ChangeUserRolesAsync(
+            adminUserId,
+            userId,
+            roles,
+            selectRolesToAdd,
+            userManager.AddToRolesAsync
+        );
     }
 
-    public async Task<RoleChangeResult> RemoveUserRolesAsync(string adminUserId, string userId, IReadOnlyList<string> roles)
+    public Task<RoleChangeResult> RemoveUserRolesAsync(
+        string adminUserId,
+        string userId,
+        IReadOnlyList<string> roles)
     {
-        // admin cannot change own role
+        Func<List<string>, IList<string>, List<string>> selectRolesToRemove =
+            (validRoles, currentRoles) =>
+                validRoles
+                    .Where(r => currentRoles.Contains(r, StringComparer.OrdinalIgnoreCase))
+                    .ToList();
+
+        return ChangeUserRolesAsync(
+            adminUserId,
+            userId,
+            roles,
+            selectRolesToRemove,
+            userManager.RemoveFromRolesAsync
+        );
+    }
+
+    private async Task<RoleChangeResult> ChangeUserRolesAsync(
+        string adminUserId,
+        string userId,
+        IReadOnlyList<string> roles,
+        Func<List<string>, IList<string>, List<string>> selectRoles,
+        Func<AppUser, IEnumerable<string>, Task<IdentityResult>> applyRoles
+    )
+    {
         if (adminUserId == userId)
             return new RoleChangeResult(false, Array.Empty<string>());
 
         var user = await userManager.FindByIdAsync(userId);
         if (user is null)
             return new RoleChangeResult(false, Array.Empty<string>());
-
 
         var validRoles = roles
             .Where(r => IdentityDataSeeder.AllowedRoles.Contains(r))
@@ -91,17 +102,15 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
 
         var currentRoles = await userManager.GetRolesAsync(user);
 
-        var rolesToRemove = validRoles
-            .Where(r => currentRoles.Contains(r, StringComparer.OrdinalIgnoreCase))
-            .ToList();
+        var selectedRoles = selectRoles(validRoles, currentRoles);
 
-        if (rolesToRemove.Count == 0)
+        if (selectedRoles.Count == 0)
             return new RoleChangeResult(true, Array.Empty<string>());
 
-        var removeResult = await userManager.RemoveFromRolesAsync(user, rolesToRemove);
+        var result = await applyRoles(user, selectedRoles);
 
-        return removeResult.Succeeded
-            ? new RoleChangeResult(true, rolesToRemove)
+        return result.Succeeded
+            ? new RoleChangeResult(true, selectedRoles)
             : new RoleChangeResult(false, Array.Empty<string>());
     }
 }
