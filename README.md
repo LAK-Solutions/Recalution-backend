@@ -54,6 +54,7 @@ Use the format: `<type>/<issue-number>/<short-description>`
 - `feature` → new features
 - `bugfix` → bug fixes
 - `chore` → maintenance tasks
+- `refactor` → code restructuring
 
 **Rules:**
 1. Use lowercase letters only.  
@@ -64,6 +65,7 @@ Use the format: `<type>/<issue-number>/<short-description>`
 `feature/12/add-transaction-crud`  
 `bugfix/34/fix-budget-validation`  
 `chore/78/update-dependencies`  
+`refactor → code restructuring without changing external behavior`
 
 ### Workflow
 1. Make sure there is a GitHub issue for your work.

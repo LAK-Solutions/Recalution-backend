@@ -95,7 +95,7 @@ builder.Services
         options.Password.RequireUppercase = false;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireLowercase = false;
-    }).AddRoles<IdentityRole>()
+    }).AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>();
 
 
