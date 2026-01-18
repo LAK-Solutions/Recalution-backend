@@ -14,25 +14,27 @@ public static class IdentityDataSeeder
         };
     public static async Task SeedRolesAsync(IServiceProvider services)
     {
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
         foreach (var role in AllowedRoles)
         {
             if (!await roleManager.RoleExistsAsync(role))
-                await roleManager.CreateAsync(new IdentityRole(role));
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(role));
+            }
         }
     }
 
     public static async Task SeedAdminAsync(IServiceProvider services)
     {
         var userManager = services.GetRequiredService<UserManager<AppUser>>();
-        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-        // Make sure Admin role exists
         if (!await roleManager.RoleExistsAsync("Admin"))
-            await roleManager.CreateAsync(new IdentityRole("Admin"));
+        {
+            await roleManager.CreateAsync(new IdentityRole<Guid>("Admin"));
+        }
 
-        // Check if admin user already exists
         var adminUser = await userManager.FindByNameAsync("admin");
         if (adminUser == null)
         {
@@ -43,8 +45,26 @@ public static class IdentityDataSeeder
                 EmailConfirmed = true
             };
 
-            await userManager.CreateAsync(adminUser, "Password123!"); // default password
+            await userManager.CreateAsync(adminUser, "Password123!");
             await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+    }
+
+    public static async Task SeedTestUserAsync(IServiceProvider services)
+    {
+        var userManager = services.GetRequiredService<UserManager<AppUser>>();
+
+        var testUser = await userManager.FindByNameAsync("test@test.com");
+        if (testUser == null)
+        {
+            testUser = new AppUser
+            {
+                UserName = "test@test.com",
+                Email = "test@test.com",
+                EmailConfirmed = true
+            };
+
+            await userManager.CreateAsync(testUser, "Test123!");
         }
     }
 }

@@ -1,18 +1,20 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Services;
+using Recalution.Application.Services;
+using Recalution.Infrastructure;
 using Recalution.Infrastructure.Data;
 using Recalution.Infrastructure.Identity;
+using Recalution.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
@@ -52,57 +54,73 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Infrastructure layer
+builder.Services.AddInfrastructure();
+
 // JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
 
 builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-
-            // This tells ASP.NET Core which claim should be used as NameIdentifier
-            NameClaimType = JwtRegisteredClaimNames.Sub
-        };
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+        NameClaimType = JwtRegisteredClaimNames.Sub
+    };
+});
 
 builder.Services.AddAuthorization();
 
-// Register DbContext here
+// Register DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services
-    .AddIdentityCore<AppUser>((options) =>
-    {
-        // Disable all password requirements
-        options.Password.RequiredLength = 1;
-        options.Password.RequireDigit = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequireLowercase = false;
-    }).AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>();
+// Identity
+builder.Services.AddIdentityCore<AppUser>(options =>
+{
+    options.Password.RequiredLength = 1;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = false;
+})
+.AddRoles<IdentityRole<Guid>>()
+.AddEntityFrameworkStores<AppDbContext>();
 
+// Application services
+builder.Services.AddScoped<IDeckRepository, DeckRepository>();
+builder.Services.AddScoped<IDeckService, DeckService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Seed data
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    await IdentityDataSeeder.SeedRolesAsync(services);
+    await IdentityDataSeeder.SeedAdminAsync(services);
+    await IdentityDataSeeder.SeedTestUserAsync(services);
+
+    var context = services.GetRequiredService<AppDbContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    await DbSeeder.SeedAsync(context, userManager);
+}
+
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -111,17 +129,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-
-    // Seed roles first
-    await IdentityDataSeeder.SeedRolesAsync(services);
-
-    // Seed admin user next
-    await IdentityDataSeeder.SeedAdminAsync(services);
-}
 
 app.Run();
