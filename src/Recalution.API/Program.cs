@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Recalution.Infrastructure.Data;
 using Recalution.Infrastructure.Identity;
+using Recalution.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +47,9 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+// Infrastructure layer
+builder.Services.AddInfrastructure();
 
 // JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
