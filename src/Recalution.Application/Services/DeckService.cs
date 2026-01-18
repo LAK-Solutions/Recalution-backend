@@ -7,9 +7,9 @@ namespace Recalution.Application.Services;
 
 public class DeckService(IDeckRepository deckRepository) : IDeckService
 {
-    public async Task<IReadOnlyCollection<Deck>> GetByUserIdAsync(string userId)
+    public async Task<IReadOnlyCollection<Deck>> GetByUserIdAsync(Guid userId)
     {
-        if (userId == String.Empty)
+        if (userId == Guid.Empty)
         {
             throw new ArgumentException("UserId cannot be empty", nameof(userId));
         }
@@ -17,7 +17,7 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return await deckRepository.GetDeckByUserId(userId);
     }
 
-    public async Task<Deck?> CreateDeckAsync(string name, string userId)
+    public async Task<Deck?> CreateDeckAsync(string name, Guid userId)
     {
         var deck = new Deck
         {
@@ -30,7 +30,7 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return deck;
     }
 
-    public async Task<Deck?> UpdateDeckAsync(Guid deckId, string name, string userId)
+    public async Task<Deck?> UpdateDeckAsync(Guid deckId, string name, Guid userId)
     {
         if (deckId == Guid.Empty)
             throw new ArgumentException("DeckId cannot be empty", nameof(deckId));
@@ -46,7 +46,7 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return deck;
     }
 
-    public async Task DeleteDeckAsync(Guid deckId, string userId)
+    public async Task DeleteDeckAsync(Guid deckId, Guid userId)
     {
         var deck = await deckRepository.GetByIdAsync(deckId);
         if (deck == null) throw new KeyNotFoundException("Deck not found");

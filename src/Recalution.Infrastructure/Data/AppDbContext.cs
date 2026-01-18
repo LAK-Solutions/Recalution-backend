@@ -6,7 +6,8 @@ using Recalution.Infrastructure.Identity;
 
 namespace Recalution.Infrastructure.Data;
 
-public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
+public class AppDbContext(DbContextOptions<AppDbContext> options)
+    : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<Deck> Decks => Set<Deck>();
 

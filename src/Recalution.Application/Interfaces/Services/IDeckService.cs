@@ -5,8 +5,8 @@ namespace Recalution.Application.Interfaces.Services;
 
 public interface IDeckService
 {
-    Task<IReadOnlyCollection<Deck>> GetByUserIdAsync(string userId);
-    Task<Deck?> CreateDeckAsync(string name, string userId);
-    Task<Deck?> UpdateDeckAsync(Guid deckId, string name, string userId);
-    Task DeleteDeckAsync(Guid deckId, string userId);
+    Task<IReadOnlyCollection<Deck>> GetByUserIdAsync(Guid userId);
+    Task<Deck?> CreateDeckAsync(string name, Guid userId);
+    Task<Deck?> UpdateDeckAsync(Guid deckId, string name, Guid userId);
+    Task DeleteDeckAsync(Guid deckId, Guid userId);
 }

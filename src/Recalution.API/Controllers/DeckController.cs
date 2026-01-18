@@ -11,7 +11,7 @@ namespace Recalution.API.Controllers;
 public class DecksController(IDeckService deckService) : Controller
 {
     [HttpGet("user/{userId:guid}")]
-    public async Task<IActionResult> GetDecksByUserId(string userId)
+    public async Task<IActionResult> GetDecksByUserId(Guid userId)
     {
         var decks = await deckService.GetByUserIdAsync(userId);
 
@@ -23,7 +23,10 @@ public class DecksController(IDeckService deckService) : Controller
     public async Task<IActionResult>
         CreateDeck([FromBody] CreateDeckDto dto)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            return BadRequest("Invalid user ID.");
 
         var deck = await deckService.CreateDeckAsync(dto.Name, userId);
 
@@ -44,7 +47,10 @@ public class DecksController(IDeckService deckService) : Controller
     public async Task<IActionResult>
         UpdateDeck(Guid deckId, [FromBody] UpdateDeckDto dto)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            return BadRequest("Invalid user ID.");
 
         var deck = await deckService.UpdateDeckAsync(deckId, dto.Name, userId);
 
@@ -65,7 +71,10 @@ public class DecksController(IDeckService deckService) : Controller
     public async Task<IActionResult>
         DeleteDeck(Guid deckId)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            return BadRequest("Invalid user ID.");
 
         await deckService.DeleteDeckAsync(deckId, userId);
 

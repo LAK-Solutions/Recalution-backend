@@ -7,5 +7,5 @@ public class Deck
 
     public ICollection<FlashCard> FlashCards { get; set; } = new List<FlashCard>();
 
-    public string OwnerId { get; set; } = null!;
+    public Guid OwnerId { get; set; }
 }
