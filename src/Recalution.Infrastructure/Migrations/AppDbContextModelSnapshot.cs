@@ -152,6 +152,42 @@ namespace Recalution.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Recalution.Domain.Entities.Deck", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("Decks");
+                });
+
+            modelBuilder.Entity("Recalution.Domain.Entities.FlashCard", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("DeckId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("FlashCard");
+                });
+
             modelBuilder.Entity("Recalution.Infrastructure.Identity.AppUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -266,6 +302,27 @@ namespace Recalution.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Recalution.Domain.Entities.Deck", b =>
+                {
+                    b.HasOne("Recalution.Infrastructure.Identity.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Recalution.Domain.Entities.FlashCard", b =>
+                {
+                    b.HasOne("Recalution.Domain.Entities.Deck", null)
+                        .WithMany("FlashCards")
+                        .HasForeignKey("DeckId");
+                });
+
+            modelBuilder.Entity("Recalution.Domain.Entities.Deck", b =>
+                {
+                    b.Navigation("FlashCards");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,9 @@
+using Recalution.Domain.Entities;
+using Recalution.Application.Interfaces;
+
+namespace Recalution.Application.Interfaces;
+
+public interface IDeckRepository : IRepository<Deck>
+{
+    Task<IReadOnlyCollection<Deck>> GetDeckByUserId(Guid userId);
+}
