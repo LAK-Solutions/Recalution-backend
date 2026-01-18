@@ -1,7 +1,7 @@
 namespace Recalution.Application.DTO.Jwt;
 
 public record JwtUserDto(
-    string Id,
+    Guid Id,
     string? Email,
     IReadOnlyList<string> Roles
 );
