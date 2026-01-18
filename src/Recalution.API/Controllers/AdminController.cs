@@ -36,7 +36,7 @@ public class AdminController : ControllerBase
         foreach (var u in users)
         {
             var roles = await _userManager.GetRolesAsync(
-                await _userManager.FindByIdAsync(u.Id)
+                await _userManager.FindByIdAsync(u.Id.ToString())
             );
 
             usersWithRoles.Add(new

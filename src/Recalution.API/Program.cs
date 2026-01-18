@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Recalution.Application.Interfaces;
 using Recalution.Application.Interfaces.Services;
 using Recalution.Application.Services;
+using Recalution.Infrastructure;
 using Recalution.Infrastructure.Data;
 using Recalution.Infrastructure.Identity;
 using Recalution.Infrastructure.Repositories;
@@ -51,6 +51,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+// Infrastructure layer
+builder.Services.AddInfrastructure();
+
 // JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
@@ -91,7 +94,7 @@ builder.Services.AddIdentityCore<AppUser>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
 })
-.AddRoles<IdentityRole>()
+.AddRoles<IdentityRole<Guid>>()
 .AddEntityFrameworkStores<AppDbContext>();
 
 // Application services
