@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Recalution.Application.Interfaces;
 using Recalution.Infrastructure.Identity;
 
 namespace Recalution.API.Controllers;
@@ -12,75 +13,62 @@ namespace Recalution.API.Controllers;
 [Authorize(Roles = "Admin")]
 public class AdminController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly IAdminUserManager _adminUserManager;
 
-    public AdminController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+    public AdminController(IAdminUserManager adminUserManager)
     {
-        _userManager = userManager;
-        _roleManager = roleManager;
+        _adminUserManager = adminUserManager;
     }
 
     [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _userManager.Users
-            .Select(u => new
-            {
-                u.Id,
-                u.Email,
-            })
-            .ToListAsync();
-
-        var usersWithRoles = new List<object>();
-        foreach (var u in users)
-        {
-            var roles = await _userManager.GetRolesAsync(
-                await _userManager.FindByIdAsync(u.Id.ToString())
-            );
-
-            usersWithRoles.Add(new
-            {
-                u.Id,
-                u.Email,
-                Roles = roles
-            });
-        }
-
-        return Ok(usersWithRoles);
+        var users = await _adminUserManager.GetAllUsersAsync();
+        return Ok(users);
     }
 
-    [HttpPut("users/{userId}/role")]
-    public async Task<IActionResult> ChangeUserRole(
-        string userId,
-        [FromBody] string role)
+    [HttpPut("users/{userId}/roles")]
+    public async Task<IActionResult> AddUserRoles(
+        Guid userId,
+        [FromBody] IReadOnlyList<string> roles)
     {
-        // Prevent admin from changing their own role
-        var currentAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (currentAdminId == userId)
-            return BadRequest("Admin cannot change their own role");
+        var currentAdminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        // Find the target user
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-            return NotFound("User not found");
+        var result = await _adminUserManager.AddUserRolesAsync(currentAdminId, userId, roles);
 
-        // Validate the requested role exists
-        if (!await _roleManager.RoleExistsAsync(role))
-            return BadRequest("Role does not exist");
+        if (!result.Success) return BadRequest("Role change failed");
 
-        // Remove all current roles
-        var currentRoles = await _userManager.GetRolesAsync(user);
-        await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-        // Add the new role
-        await _userManager.AddToRoleAsync(user, role);
-
-        // Return confirmation
         return Ok(new
         {
-            userId = user.Id,
-            newRole = role
+            userId,
+            addedRoles = result.ChangedRoles
+        });
+    }
+
+    [HttpDelete("users/{userId}")]
+    public async Task<IActionResult> DeleteUser(Guid userId)
+    {
+        var ok = await _adminUserManager.DeleteUserAsync(userId);
+
+        return NoContent();
+    }
+
+    [HttpDelete("users/{userId}/roles")]
+    public async Task<IActionResult> RemoveUserRoles(
+        Guid userId,
+        [FromBody] IReadOnlyList<string> roles)
+    {
+        var currentAdminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+        var result = await _adminUserManager.RemoveUserRolesAsync(currentAdminId, userId, roles);
+
+        if (!result.Success)
+            return BadRequest("Role removal failed");
+
+        return Ok(new
+        {
+            userId,
+            removedRoles = result.ChangedRoles
         });
     }
 }

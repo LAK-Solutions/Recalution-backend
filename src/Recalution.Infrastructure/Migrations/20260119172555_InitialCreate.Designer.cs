@@ -12,8 +12,8 @@ using Recalution.Infrastructure.Data;
 namespace Recalution.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260118174506_InitialCreateWithIdentity")]
-    partial class InitialCreateWithIdentity
+    [Migration("20260119172555_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

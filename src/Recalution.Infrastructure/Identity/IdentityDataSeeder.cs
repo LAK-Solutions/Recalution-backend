@@ -5,13 +5,18 @@ namespace Recalution.Infrastructure.Identity;
 
 public static class IdentityDataSeeder
 {
+    public static readonly HashSet<string> AllowedRoles =
+        new(StringComparer.OrdinalIgnoreCase)
+        {
+            "Admin",
+            "User",
+            "Manager"
+        };
     public static async Task SeedRolesAsync(IServiceProvider services)
     {
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
-        string[] roles = { "Admin", "User", "Manager" };
-
-        foreach (var role in roles)
+        foreach (var role in AllowedRoles)
         {
             if (!await roleManager.RoleExistsAsync(role))
             {
