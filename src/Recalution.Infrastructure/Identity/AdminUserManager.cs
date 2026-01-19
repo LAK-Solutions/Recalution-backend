@@ -6,7 +6,7 @@ using Recalution.Application.Results;
 
 namespace Recalution.Infrastructure.Identity;
 
-public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
     : IAdminUserManager
 {
     public async Task<IReadOnlyList<UserDetailsDto>> GetAllUsersAsync()
@@ -23,14 +23,14 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
         return result;
     }
 
-    public Task<UserDetailsDto?> GetByIdAsync(string userId)
+    public Task<UserDetailsDto?> GetByIdAsync(Guid userId)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteUserAsync(string userId)
+    public async Task<bool> DeleteUserAsync(Guid userId)
     {
-        var user = await userManager.FindByIdAsync(userId);
+        var user = await userManager.FindByIdAsync(userId.ToString());
         if (user is null)
             return false;
 
@@ -39,8 +39,8 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
     }
 
     public Task<RoleChangeResult> AddUserRolesAsync(
-        string adminUserId,
-        string userId,
+        Guid adminUserId,
+        Guid userId,
         IReadOnlyList<string> roles)
     {
         Func<List<string>, IList<string>, List<string>> selectRolesToAdd =
@@ -59,8 +59,8 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
     }
 
     public Task<RoleChangeResult> RemoveUserRolesAsync(
-        string adminUserId,
-        string userId,
+        Guid adminUserId,
+        Guid userId,
         IReadOnlyList<string> roles)
     {
         Func<List<string>, IList<string>, List<string>> selectRolesToRemove =
@@ -79,8 +79,8 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
     }
 
     private async Task<RoleChangeResult> ChangeUserRolesAsync(
-        string adminUserId,
-        string userId,
+        Guid adminUserId,
+        Guid userId,
         IReadOnlyList<string> roles,
         Func<List<string>, IList<string>, List<string>> selectRoles,
         Func<AppUser, IEnumerable<string>, Task<IdentityResult>> applyRoles
@@ -89,7 +89,7 @@ public class AdminUserManager(UserManager<AppUser> userManager, RoleManager<Iden
         if (adminUserId == userId)
             return new RoleChangeResult(false, Array.Empty<string>());
 
-        var user = await userManager.FindByIdAsync(userId);
+        var user = await userManager.FindByIdAsync(userId.ToString());
         if (user is null)
             return new RoleChangeResult(false, Array.Empty<string>());
 

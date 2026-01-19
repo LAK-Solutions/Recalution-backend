@@ -29,10 +29,10 @@ public class AdminController : ControllerBase
 
     [HttpPut("users/{userId}/roles")]
     public async Task<IActionResult> AddUserRoles(
-        string userId,
+        Guid userId,
         [FromBody] IReadOnlyList<string> roles)
     {
-        var currentAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var currentAdminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         var result = await _adminUserManager.AddUserRolesAsync(currentAdminId, userId, roles);
 
@@ -46,7 +46,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpDelete("users/{userId}")]
-    public async Task<IActionResult> DeleteUser(string userId)
+    public async Task<IActionResult> DeleteUser(Guid userId)
     {
         var ok = await _adminUserManager.DeleteUserAsync(userId);
 
@@ -55,12 +55,10 @@ public class AdminController : ControllerBase
 
     [HttpDelete("users/{userId}/roles")]
     public async Task<IActionResult> RemoveUserRoles(
-        string userId,
+        Guid userId,
         [FromBody] IReadOnlyList<string> roles)
     {
-        var currentAdminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (currentAdminId is null)
-            return Unauthorized();
+        var currentAdminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
         var result = await _adminUserManager.RemoveUserRolesAsync(currentAdminId, userId, roles);
 

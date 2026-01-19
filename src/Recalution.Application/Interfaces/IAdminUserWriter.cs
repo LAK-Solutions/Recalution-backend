@@ -4,7 +4,7 @@ namespace Recalution.Application.Interfaces;
 
 public interface IAdminUserWriter
 {
-    Task<bool> DeleteUserAsync(string userId);
-    Task<RoleChangeResult> AddUserRolesAsync(string adminUserId, string userId, IReadOnlyList<string> roles);
-    Task<RoleChangeResult> RemoveUserRolesAsync(string adminUserId, string userId, IReadOnlyList<string> roles);
+    Task<bool> DeleteUserAsync(Guid userId);
+    Task<RoleChangeResult> AddUserRolesAsync(Guid adminUserId, Guid userId, IReadOnlyList<string> roles);
+    Task<RoleChangeResult> RemoveUserRolesAsync(Guid adminUserId, Guid userId, IReadOnlyList<string> roles);
 }
