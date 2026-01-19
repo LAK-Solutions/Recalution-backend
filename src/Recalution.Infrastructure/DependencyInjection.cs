@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Services;
 using Recalution.Infrastructure.Services;
 
 namespace Recalution.Infrastructure;

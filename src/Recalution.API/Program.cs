@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Repositories;
 using Recalution.Application.Interfaces.Services;
 using Recalution.Application.Services;
 using Recalution.Infrastructure;
