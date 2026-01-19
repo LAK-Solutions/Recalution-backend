@@ -28,7 +28,7 @@ public class DecksController(IDeckService deckService) : Controller
         if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             return BadRequest("Invalid user ID.");
 
-        var deck = await deckService.CreateDeckAsync(dto.Name, userId);
+        var deck = await deckService.CreateDeckAsync(dto, userId);
 
         if (deck == null)
         {

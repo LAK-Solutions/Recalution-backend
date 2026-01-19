@@ -1,5 +1,7 @@
 using Recalution.Application.DTO.Deck;
+using Recalution.Application.DTO.FlashCard;
 using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Repositories;
 using Recalution.Application.Interfaces.Services;
 using Recalution.Domain.Entities;
 
@@ -17,17 +19,42 @@ public class DeckService(IDeckRepository deckRepository) : IDeckService
         return await deckRepository.GetDeckByUserId(userId);
     }
 
-    public async Task<Deck?> CreateDeckAsync(string name, Guid userId)
+    public async Task<DeckDetailsDto?> CreateDeckAsync(CreateDeckDto dto, Guid userId)
     {
+        if (dto.Cards.Count < 2)
+            throw new ArgumentException("Deck must contain at least 2 flashcards.", nameof(dto.Cards));
+
+        if (await deckRepository.DeckExistsAsync(dto.Name, userId))
+            throw new ArgumentException("Deck with this name already exists.", nameof(dto.Name));
+
         var deck = new Deck
         {
-            Id = Guid.NewGuid(),
-            Name = name,
+            Name = dto.Name,
             OwnerId = userId
         };
 
+        foreach (var card in dto.Cards)
+        {
+            deck.FlashCards.Add(new FlashCard
+            {
+                Question = card.Question,
+                Answer = card.Answer,
+            });
+        }
+
         await deckRepository.AddAsync(deck);
-        return deck;
+
+        return new DeckDetailsDto
+        {
+            Id = deck.Id,
+            Name = deck.Name,
+            Cards = deck.FlashCards.Select(c => new FlashCardDetailsDto
+            {
+                Id = c.Id,
+                Question = c.Question,
+                Answer = c.Answer
+            }).ToList()
+        };
     }
 
     public async Task<Deck?> UpdateDeckAsync(Guid deckId, string name, Guid userId)
