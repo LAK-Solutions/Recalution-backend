@@ -1,4 +1,4 @@
-namespace Recalution.Application.Interfaces;
+namespace Recalution.Application.Interfaces.Repositories;
 
 public interface IRepository<T> where T : class
 {

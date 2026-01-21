@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Recalution.Application.DTO.Jwt;
 using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Services;
 
 namespace Recalution.Infrastructure.Services;
 

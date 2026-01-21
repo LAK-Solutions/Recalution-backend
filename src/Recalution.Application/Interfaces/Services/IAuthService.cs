@@ -1,6 +1,6 @@
 using Recalution.Application.DTO.Auth;
 
-namespace Recalution.Application.Interfaces;
+namespace Recalution.Application.Interfaces.Services;
 
 public interface IAuthService
 {

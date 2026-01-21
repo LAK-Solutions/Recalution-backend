@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Recalution.Application.DTO.Auth;
 using Recalution.Application.DTO.Jwt;
-using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Services;
 using Recalution.Infrastructure.Identity;
 
 namespace Recalution.Infrastructure.Services;
