@@ -52,7 +52,7 @@ public class DecksController(IDeckService deckService) : Controller
         if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
             return BadRequest("Invalid user ID.");
 
-        var deck = await deckService.UpdateDeckAsync(deckId, dto.Name, userId);
+        var deck = await deckService.UpdateDeckAsync(deckId, dto, userId);
 
         if (deck == null)
         {
