@@ -71,7 +71,7 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
             throw new UnauthorizedAccessException("You cannot update the deck");
 
         deck.Name = dto.Name;
-        var existingCards = await flashCardRepository.GetFlashCardByDeckId(deck.Id);
+        var existingCards = await flashCardRepository.GetFlashCardsByDeckIdAsync(deck.Id);
 
         await AddOrUpdateCards(deck.Id, dto.Cards, existingCards);
 
@@ -80,7 +80,7 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
         var dtoIds = dto.Cards.Select(c => c.Id).ToHashSet();
         await DeleteRemovedCards(existingCards, dtoIds);
 
-        var cards = await flashCardRepository.GetFlashCardByDeckId(deck.Id);
+        var cards = await flashCardRepository.GetFlashCardsByDeckIdAsync(deck.Id);
         return new DeckDetailsDto
         {
             Id = deck.Id,

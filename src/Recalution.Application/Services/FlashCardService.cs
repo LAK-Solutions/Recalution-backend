@@ -11,7 +11,7 @@ public class FlashCardService(IFlashCardRepository flashCardRepository) : IFlash
         if (deckId == Guid.Empty)
             throw new ArgumentException("DeckId cannot be empty", nameof(deckId));
 
-        var flashCards = await flashCardRepository.GetFlashCardByDeckId(deckId);
+        var flashCards = await flashCardRepository.GetFlashCardsByDeckIdAsync(deckId);
 
         return flashCards.Select(f => new FlashCardDetailsDto
         {

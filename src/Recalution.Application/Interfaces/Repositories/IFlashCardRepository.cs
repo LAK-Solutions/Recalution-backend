@@ -5,5 +5,5 @@ namespace Recalution.Application.Interfaces.Repositories;
 
 public interface IFlashCardRepository : IRepository<FlashCard>
 {
-    Task<IReadOnlyCollection<FlashCard>> GetFlashCardByDeckId(Guid deckId);
+    Task<IReadOnlyCollection<FlashCard>> GetFlashCardsByDeckIdAsync(Guid deckId);
 }

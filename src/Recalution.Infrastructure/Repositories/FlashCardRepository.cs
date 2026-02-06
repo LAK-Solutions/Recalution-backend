@@ -7,7 +7,7 @@ namespace Recalution.Infrastructure.Repositories;
 
 public class FlashCardRepository(AppDbContext context) : Repository<FlashCard>(context), IFlashCardRepository
 {
-    public async Task<IReadOnlyCollection<FlashCard>> GetFlashCardByDeckId(Guid deckId)
+    public async Task<IReadOnlyCollection<FlashCard>> GetFlashCardsByDeckIdAsync(Guid deckId)
     {
         return await _dbSet.Where(d => d.DeckId == deckId).ToListAsync();
     }
