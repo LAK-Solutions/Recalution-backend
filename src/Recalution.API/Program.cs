@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Recalution.Application;
 using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Repositories;
 using Recalution.Application.Interfaces.Services;
 using Recalution.Application.Services;
 using Recalution.Infrastructure;
@@ -51,32 +53,33 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Infrastructure layer
+// DI
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 // JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
 
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-        NameClaimType = JwtRegisteredClaimNames.Sub
-    };
-});
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+            NameClaimType = JwtRegisteredClaimNames.Sub
+        };
+    });
 
 builder.Services.AddAuthorization();
 
@@ -87,15 +90,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Identity
 builder.Services.AddIdentityCore<AppUser>(options =>
-{
-    options.Password.RequiredLength = 1;
-    options.Password.RequireDigit = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireLowercase = false;
-})
-.AddRoles<IdentityRole<Guid>>()
-.AddEntityFrameworkStores<AppDbContext>();
+    {
+        options.Password.RequiredLength = 1;
+        options.Password.RequireDigit = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireLowercase = false;
+    })
+    .AddRoles<IdentityRole<Guid>>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 // Application services
 builder.Services.AddScoped<IDeckRepository, DeckRepository>();

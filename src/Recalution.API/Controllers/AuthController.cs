@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Recalution.Application.DTO.Auth;
-using Recalution.Application.Interfaces;
+using Recalution.Application.Interfaces.Services;
 
 namespace Recalution.API.Controllers;
 
