@@ -1,19 +1,11 @@
-# Recalution
+# Recalution-backend
 
-**Recalution** is a minimal flash-card learning app focused on clarity, speed, and full freedom—without subscriptions, paywalls, or unnecessary complexity.
+This repository provides the universal API of Project Recalution. 
+For a full description of the product vision and goals, see:
+- **Project overview:** [LINK_TO_MAIN_PROJECT_DOCS](https://docs.google.com/document/d/1rVIXDW3yb_tYRrazl4toEDbBXGfARA6R96kuV3lunlY/edit?tab=t.0)
 
-## Problem We Are Solving
-- Existing apps are overloaded (e.g., Anki learning curve)
-- Others lock basic behavior behind payment (e.g., Quizlet)
-- Users who just want to create cards and repeat them are forced into complex systems
-
-We want control, simplicity, and ownership for our users.
-
-## Goals
-- Users can create flash cards and review them repeatedly in a simple, predictable way  
-- Users can start using the app as a named profile to associate their flash cards and progress  
-- Minimal feature surface: no settings pages, no modes, no plugins  
-- Personal usability: the app is good enough for the creators to use daily for real learning  
+**Other repositories using this API:**
+- **Recalution Frontend:** [LINK_TO_FRONTEND_REPO]
 
 ## Getting Started
 
