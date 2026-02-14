@@ -1,29 +1,19 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Recalution.Application.Interfaces;
-using Recalution.Infrastructure.Identity;
 
 namespace Recalution.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize(Roles = "Admin")]
-public class AdminController : ControllerBase
+public class AdminController(IAdminUserManager adminUserManager) : ControllerBase
 {
-    private readonly IAdminUserManager _adminUserManager;
-
-    public AdminController(IAdminUserManager adminUserManager)
-    {
-        _adminUserManager = adminUserManager;
-    }
-
     [HttpGet("users")]
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = await _adminUserManager.GetAllUsersAsync();
+        var users = await adminUserManager.GetAllUsersAsync();
         return Ok(users);
     }
 
@@ -34,7 +24,7 @@ public class AdminController : ControllerBase
     {
         var currentAdminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        var result = await _adminUserManager.AddUserRolesAsync(currentAdminId, userId, roles);
+        var result = await adminUserManager.AddUserRolesAsync(currentAdminId, userId, roles);
 
         if (!result.Success) return BadRequest("Role change failed");
 
@@ -48,7 +38,7 @@ public class AdminController : ControllerBase
     [HttpDelete("users/{userId}")]
     public async Task<IActionResult> DeleteUser(Guid userId)
     {
-        var ok = await _adminUserManager.DeleteUserAsync(userId);
+        var ok = await adminUserManager.DeleteUserAsync(userId);
 
         return NoContent();
     }
@@ -60,7 +50,7 @@ public class AdminController : ControllerBase
     {
         var currentAdminId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-        var result = await _adminUserManager.RemoveUserRolesAsync(currentAdminId, userId, roles);
+        var result = await adminUserManager.RemoveUserRolesAsync(currentAdminId, userId, roles);
 
         if (!result.Success)
             return BadRequest("Role removal failed");
