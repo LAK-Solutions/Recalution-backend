@@ -59,7 +59,13 @@ builder.Services.AddApplication();
 
 // JWT Settings
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
+
+var secret = jwtSettings["Secret"];
+if (string.IsNullOrEmpty(secret))
+    throw new Exception("JWT Secret is missing");
+
+var secretKey = Encoding.UTF8.GetBytes(secret);
+
 
 builder.Services.AddAuthentication(options =>
     {
