@@ -104,6 +104,18 @@ builder.Services.AddIdentityCore<AppUser>(options =>
 builder.Services.AddScoped<IDeckRepository, DeckRepository>();
 builder.Services.AddScoped<IDeckService, DeckService>();
 
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+
 var app = builder.Build();
 
 // Seed data
@@ -119,6 +131,8 @@ using (var scope = app.Services.CreateScope())
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await DbSeeder.SeedAsync(context, userManager);
 }
+
+app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
