@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Recalution.Application.Common.Exceptions;
 using Recalution.Application.DTO.Deck;
 using Recalution.Application.Interfaces.Services;
 
@@ -23,17 +24,9 @@ public class DecksController(IDeckService deckService) : Controller
     public async Task<IActionResult>
         CreateDeck([FromBody] CreateDeckDto dto)
     {
-        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
-            return BadRequest("Invalid user ID.");
+        var userId = GetUserId();
 
         var deck = await deckService.CreateDeckAsync(dto, userId);
-
-        if (deck == null)
-        {
-            return BadRequest(new { Message = "Deck could not be created." });
-        }
 
         return Ok(new
         {
@@ -47,17 +40,9 @@ public class DecksController(IDeckService deckService) : Controller
     public async Task<IActionResult>
         UpdateDeck(Guid deckId, [FromBody] UpdateDeckDto dto)
     {
-        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
-            return BadRequest("Invalid user ID.");
+        var userId = GetUserId();
 
         var deck = await deckService.UpdateDeckAsync(deckId, dto, userId);
-
-        if (deck == null)
-        {
-            return BadRequest(new { Message = "Deck could not be updated." });
-        }
 
         return Ok(new
         {
@@ -71,13 +56,19 @@ public class DecksController(IDeckService deckService) : Controller
     public async Task<IActionResult>
         DeleteDeck(Guid deckId)
     {
-        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
-            return BadRequest("Invalid user ID.");
+        var userId = GetUserId();
 
         await deckService.DeleteDeckAsync(deckId, userId);
 
         return NoContent();
+    }
+
+    private Guid GetUserId()
+    {
+        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdString) || !Guid.TryParse(userIdString, out var userId))
+            throw new AppException("Invalid user ID.", System.Net.HttpStatusCode.BadRequest);
+
+        return userId;
     }
 }

@@ -1,4 +1,6 @@
+using System.Net;
 using Microsoft.AspNetCore.Identity;
+using Recalution.Application.Common.Exceptions;
 using Recalution.Application.DTO.Auth;
 using Recalution.Application.DTO.Jwt;
 using Recalution.Application.Interfaces.Services;
@@ -14,7 +16,7 @@ public class AuthService(
     public async Task RegisterAsync(RegisterDto dto)
     {
         if (await userManager.FindByEmailAsync(dto.Email) != null)
-            throw new InvalidOperationException("User already exists");
+            throw new AppException("User already exists", HttpStatusCode.Conflict);
 
         var user = new AppUser
         {
@@ -25,20 +27,22 @@ public class AuthService(
         var result = await userManager.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded)
-            throw new InvalidOperationException(
-                string.Join(", ", result.Errors.Select(e => e.Description))
-            );
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+
+            throw new AppException(errors, HttpStatusCode.BadRequest);
+        }
     }
 
     public async Task<string> LoginAsync(LoginDto dto)
     {
         var user = await userManager.FindByEmailAsync(dto.Email);
         if (user == null)
-            throw new UnauthorizedAccessException("Invalid email or password");
+            throw new AppException("Invalid email or password", HttpStatusCode.Unauthorized);
 
         var passwordValid = await userManager.CheckPasswordAsync(user, dto.Password);
         if (!passwordValid)
-            throw new UnauthorizedAccessException("Invalid email or password");
+            throw new AppException("Invalid email or password", HttpStatusCode.Unauthorized);
 
         var roles = await userManager.GetRolesAsync(user);
 
