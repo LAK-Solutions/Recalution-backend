@@ -1,7 +1,9 @@
+using System.Net;
 using Recalution.Application.DTO.Deck;
 using Recalution.Application.DTO.FlashCard;
 using Recalution.Application.Interfaces.Repositories;
 using Recalution.Application.Interfaces.Services;
+using Recalution.Application.Common.Exceptions;
 using Recalution.Domain.Entities;
 
 namespace Recalution.Application.Services;
@@ -11,9 +13,7 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
     public async Task<IReadOnlyCollection<Deck>> GetByUserIdAsync(Guid userId)
     {
         if (userId == Guid.Empty)
-        {
             throw new ArgumentException("UserId cannot be empty", nameof(userId));
-        }
 
         return await deckRepository.GetDeckByUserId(userId);
     }
@@ -21,10 +21,16 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
     public async Task<DeckDetailsDto?> CreateDeckAsync(CreateDeckDto dto, Guid userId)
     {
         if (dto.Cards.Count < 2)
-            throw new ArgumentException("Deck must contain at least 2 flashcards.", nameof(dto.Cards));
+            throw new AppException(
+                "Deck must contain at least 2 flashcards.",
+                HttpStatusCode.BadRequest
+            );
 
         if (await deckRepository.DeckExistsAsync(dto.Name, userId))
-            throw new ArgumentException("Deck with this name already exists.", nameof(dto.Name));
+            throw new AppException(
+                "Deck with this name already exists.",
+                HttpStatusCode.Conflict
+            );
 
         var deck = new Deck
         {
@@ -59,16 +65,20 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
     public async Task<DeckDetailsDto?> UpdateDeckAsync(Guid deckId, UpdateDeckDto dto, Guid userId)
     {
         if (dto.Cards.Count < 2)
-            throw new ArgumentException("Deck must contain at least 2 flashcards.");
+            throw new AppException(
+                "Deck must contain at least 2 flashcards.",
+                HttpStatusCode.BadRequest
+            );
 
         if (deckId == Guid.Empty)
             throw new ArgumentException("DeckId cannot be empty", nameof(deckId));
 
         var deck = await deckRepository.GetByIdAsync(deckId);
-        if (deck == null) throw new KeyNotFoundException("Deck not found");
+        if (deck == null)
+            throw new AppException("Deck not found", HttpStatusCode.NotFound);
 
         if (deck.OwnerId != userId)
-            throw new UnauthorizedAccessException("You cannot update the deck");
+            throw new AppException("You cannot update the deck", HttpStatusCode.Forbidden);
 
         deck.Name = dto.Name;
         var existingCards = await flashCardRepository.GetFlashCardsByDeckIdAsync(deck.Id);
@@ -110,7 +120,10 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
             }
             else
             {
-                var card = existingCards.First(f => f.Id == cardDto.Id);
+                var card = existingCards.FirstOrDefault(f => f.Id == cardDto.Id);
+                if (card == null)
+                    throw new AppException("Flashcard not found", HttpStatusCode.NotFound);
+
                 card.Question = cardDto.Question;
                 card.Answer = cardDto.Answer;
                 await flashCardRepository.UpdateAsync(card);
@@ -127,15 +140,14 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
         }
     }
 
-
-
     public async Task DeleteDeckAsync(Guid deckId, Guid userId)
     {
         var deck = await deckRepository.GetByIdAsync(deckId);
-        if (deck == null) throw new KeyNotFoundException("Deck not found");
+        if (deck == null)
+            throw new AppException("Deck not found", HttpStatusCode.NotFound);
 
         if (deck.OwnerId != userId)
-            throw new UnauthorizedAccessException("You cannot delete the deck");
+            throw new AppException("You cannot delete the deck", HttpStatusCode.Forbidden);
 
         await deckRepository.DeleteAsync(deck);
     }
