@@ -18,6 +18,30 @@ public class DeckService(IDeckRepository deckRepository, IFlashCardRepository fl
         return await deckRepository.GetDeckByUserId(userId);
     }
 
+    public async Task<DeckDetailsDto> GetByIdAsync(Guid deckId)
+    {
+        if (deckId == Guid.Empty)
+            throw new ArgumentException("DeckId cannot be empty", nameof(deckId));
+
+        var deck = await deckRepository.GetDeckByIdAsync(deckId);
+        if (deck == null)
+            throw new AppException("Deck not found", HttpStatusCode.NotFound);
+
+        var cards = await flashCardRepository.GetFlashCardsByDeckIdAsync(deck.Id);
+
+        return new DeckDetailsDto
+        {
+            Id = deck.Id,
+            Name = deck.Name,
+            Cards = cards.Select(f => new FlashCardDetailsDto
+            {
+                Id = f.Id,
+                Question = f.Question,
+                Answer = f.Answer
+            }).ToList()
+        };
+    }
+
     public async Task<DeckDetailsDto?> CreateDeckAsync(CreateDeckDto dto, Guid userId)
     {
         if (dto.Cards.Count < 2)

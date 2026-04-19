@@ -11,6 +11,14 @@ namespace Recalution.API.Controllers;
 [Route("api/[controller]")]
 public class DecksController(IDeckService deckService) : Controller
 {
+    [HttpGet("{deckId:guid}")]
+    public async Task<IActionResult> GetDeckById(Guid deckId)
+    {
+        var deck = await deckService.GetByIdAsync(deckId);
+
+        return Ok(deck);
+    }
+
     [HttpGet("user/{userId:guid}")]
     public async Task<IActionResult> GetDecksByUserId(Guid userId)
     {

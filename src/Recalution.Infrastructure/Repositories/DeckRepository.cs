@@ -12,6 +12,11 @@ public class DeckRepository(AppDbContext context) : Repository<Deck>(context), I
         return await _dbSet.Where(d => d.OwnerId == userId).ToListAsync();
     }
 
+    public async Task<Deck?> GetDeckByIdAsync(Guid deckId)
+    {
+        return await _dbSet.FirstOrDefaultAsync(d => d.Id == deckId);
+    }
+
     public async Task<bool> DeckExistsAsync(string name, Guid ownerId)
     {
         return await _dbSet.AnyAsync(d => d.OwnerId == ownerId && d.Name == name);
